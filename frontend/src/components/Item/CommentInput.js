@@ -1,22 +1,19 @@
 import React from "react";
 import agent from "../../agent";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ADD_COMMENT } from "../../constants/actionTypes";
 
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
-});
-
-const CommentInput = ({slug,onSubmit, currentUser}) => {
-  const [body, setBody] = React.useState("");
+const CommentInput = ({slug, onSubmit, currentUser}) => {
+  const [body, setBody] = React.useState('');
+  const dispatch = useDispatch()
 
   const createComment = async (ev) => {
     ev.preventDefault();
     const payload = await agent.Comments.create(slug, {
       body,
     })
-    onSubmit(payload);
-    setBody("");
+    dispatch({ type: ADD_COMMENT, payload })
+    setBody('');
   }
 
     return (
@@ -28,7 +25,7 @@ const CommentInput = ({slug,onSubmit, currentUser}) => {
             value={body}
             onChange={(ev) => setBody(ev.target.value)}
             rows="3"
-          ></textarea>
+          />
         </div>
         <div className="card-footer">
           <img
@@ -44,4 +41,4 @@ const CommentInput = ({slug,onSubmit, currentUser}) => {
     );
 }
 
-export default connect(() => ({}), mapDispatchToProps)(CommentInput);
+export default CommentInput;
