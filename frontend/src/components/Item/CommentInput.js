@@ -15,8 +15,8 @@ const CommentInput = ({slug, onSubmit, currentUser}) => {
     const payload = await agent.Comments.create(slug, {
       body,
     })
+    setBody('')
     await onSubmit(payload);
-    setBody('');
   }
 
     return (
