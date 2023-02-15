@@ -83,6 +83,8 @@ function seedDB() {
   seedUsers()
   seedItems()
   seedComments()
+  
+  mongoose.connection.close()
 }
 
 seedDB()
