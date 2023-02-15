@@ -9,13 +9,16 @@ const mapDispatchToProps = (dispatch) => ({
 
 const CommentInput = ({slug, onSubmit, currentUser}) => {
   const [body, setBody] = React.useState('');
+  const inputRef = React.useRef();
 
   const createComment = async (ev) => {
     ev.preventDefault();
-    const payload = await agent.Comments.create(slug, {
-      body,
-    })
+    const tempBody = body
     setBody('')
+    inputRef.current.innerText = ''
+    const payload = await agent.Comments.create(slug, {
+      tempBody,
+    })
     await onSubmit(payload);
   }
 
@@ -23,6 +26,7 @@ const CommentInput = ({slug, onSubmit, currentUser}) => {
       <form className="card comment-form m-2" onSubmit={createComment}>
         <div className="card-block">
           <textarea
+            ref={inputRef}
             className="form-control"
             placeholder="Write a comment..."
             value={body}
