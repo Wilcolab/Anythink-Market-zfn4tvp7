@@ -7,45 +7,38 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
 });
 
-class CommentInput extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      body: "",
-    };
+const CommentInput = ({slug, onSubmit, currentUser}) => {
+  const [body, setBody] = React.useState('');
+  const inputRef = React.useRef();
 
-    this.setBody = (ev) => {
-      this.setState({ body: ev.target.value });
-    };
-
-    this.createComment = async (ev) => {
-      ev.preventDefault();
-      agent.Comments.create(this.props.slug, {
-        body: this.state.body,
-      }).then((payload) => {
-        this.props.onSubmit(payload);
-      });
-      this.setState({ body: "" });
-    };
+  const createComment = async (ev) => {
+    ev.preventDefault();
+    const tempBody = body
+    setBody('')
+    inputRef.current.innerText = ''
+    const payload = await agent.Comments.create(slug, {
+      tempBody,
+    })
+    await onSubmit(payload);
   }
 
-  render() {
     return (
-      <form className="card comment-form m-2" onSubmit={this.createComment}>
+      <form className="card comment-form m-2" onSubmit={createComment}>
         <div className="card-block">
           <textarea
+            ref={inputRef}
             className="form-control"
             placeholder="Write a comment..."
-            value={this.state.body}
-            onChange={this.setBody}
+            value={body}
+            onChange={(ev) => setBody(ev.target.value)}
             rows="3"
-          ></textarea>
+          />
         </div>
         <div className="card-footer">
           <img
-            src={this.props.currentUser.image}
+            src={currentUser.image}
             className="user-pic mr-2"
-            alt={this.props.currentUser.username}
+            alt={currentUser.username}
           />
           <button className="btn btn-sm btn-primary" type="submit">
             Post Comment
@@ -53,7 +46,6 @@ class CommentInput extends React.Component {
         </div>
       </form>
     );
-  }
 }
 
 export default connect(() => ({}), mapDispatchToProps)(CommentInput);
