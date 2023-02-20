@@ -20,7 +20,7 @@ const LoggedOutView = () => {
   );
 };
 
-const LoggedInView = ({currentUser}) => {
+const LoggedInView = (props) => {
   return (
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
@@ -36,20 +36,21 @@ const LoggedInView = ({currentUser}) => {
       </li>
 
       <li className="nav-item">
-        <Link to={`/@${currentUser.username}`} className="nav-link">
+        <Link to={`/@${props.currentUser.username}`} className="nav-link">
           <img
-            src={currentUser.image}
+            src={props.currentUser.image}
             className="user-pic pr-1"
-            alt={currentUser.username}
+            alt={props.currentUser.username}
           />
-          {currentUser.username}
+          {props.currentUser.username}
         </Link>
       </li>
     </ul>
   );
 };
 
-const Header = ({currentUser}) => {
+class Header extends React.Component {
+  render() {
     return (
       <nav
         className="navbar navbar-expand-md navbar-dark"
@@ -59,13 +60,14 @@ const Header = ({currentUser}) => {
           <img alt="logo" src={logo} />
         </Link>
 
-        {currentUser ? (
-          <LoggedInView currentUser={currentUser} />
+        {this.props.currentUser ? (
+          <LoggedInView currentUser={this.props.currentUser} />
         ) : (
-          <LoggedOutView />
+          <LoggedOutView currentUser={this.props.currentUser} />
         )}
       </nav>
     );
+  }
 }
 
 export default Header;
