@@ -2,13 +2,13 @@ import React, {useState} from "react";
 import logo from "../../imgs/logo.png";
 import agent from "../../agent";
 import { connect } from "react-redux";
-import { APPLY_TAG_FILTER } from "../../constants/actionTypes";
+import { APPLY_TITLE_FILTER } from "../../constants/actionTypes";
 
 const MINIMUM_CHARACTERS = 3
 
 const mapDispatchToProps = (dispatch) => ({
   onSearchChange: (payload) =>
-    dispatch({ type: APPLY_TAG_FILTER, payload }),
+    dispatch({ type: APPLY_TITLE_FILTER, payload }),
 });
 
 const Banner = (props) => {
@@ -20,7 +20,7 @@ const Banner = (props) => {
 
     if (newSearchText.length >= MINIMUM_CHARACTERS) {
       agent.Items.byTitle(newSearchText).then(items => {
-        props.onSearchChange(items)
+        props.onSearchChange({...items, searchText: newSearchText})
       }).catch(err => console.error(err))
     }
   }

@@ -51,7 +51,8 @@ const reducer = (state = {}, action) => {
       return {
         ...state,
         items: action.payload.items,
-        itemsCount: action.payload.itemsCount
+        itemsCount: action.payload.itemsCount,
+        searchText: action.payload.searchText,
       }
     case HOME_PAGE_LOADED:
       return {
